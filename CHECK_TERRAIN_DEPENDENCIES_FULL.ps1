@@ -33,6 +33,10 @@ Write-Host "`n=== OBSIDIA TERRAIN — FULL DEPENDENCY CHECK ===" -ForegroundColo
 
 Write-Host "`n=== DOSSIERS VITAUX ===" -ForegroundColor Yellow
 
+# Ensure runtime dirs
+New-Item -ItemType Directory -Force ".\MonProjet\allData" | Out-Null
+New-Item -ItemType Directory -Force ".\logs" | Out-Null
+
 $RequiredDirs = @(
   ".\sigma",
   ".\sigma\domains",
@@ -425,4 +429,5 @@ if ($Warnings -gt 0) {
 
 Write-Host "`nREPORT_DIR=$Out" -ForegroundColor Green
 Write-Host "SUMMARY=$Out\SUMMARY.txt" -ForegroundColor Green
+
 
