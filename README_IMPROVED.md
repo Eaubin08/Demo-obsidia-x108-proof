@@ -315,7 +315,7 @@ obsidia-x108-proofs/
 │   ├── aviation_normal_flow.py      # Aviation decisions
 │   └── sigma_orchestrator.py        # Orchestration engine
 │
-├── MonProjet/                       # Node.js kernel
+├── x108-core/                       # Node.js kernel
 │   ├── index.js                     # Entry point
 │   ├── kernel.js                    # Gate X-108 implementation
 │   └── allData/                     # Runtime data (local)

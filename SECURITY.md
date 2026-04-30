@@ -31,7 +31,7 @@ These artifacts are **generated locally** during demo execution and are **not co
 
 | Artifact | Location | Content | Reason |
 |----------|----------|---------|--------|
-| **Runtime Data** | `/MonProjet/allData/` | Temporary decisions | Ephemeral, demo-only |
+| **Runtime Data** | `/x108-core/allData/` | Temporary decisions | Ephemeral, demo-only |
 | **Local Merkle** | `merkle_seal.json` (local) | Local chain state | Changes with each run |
 | **Local Logs** | `*.log` | Execution logs | Debug information |
 

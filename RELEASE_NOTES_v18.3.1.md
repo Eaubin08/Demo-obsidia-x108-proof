@@ -112,7 +112,7 @@ This release transforms the demo from a proof-of-concept into a **professional, 
 
 #### 🛡️ Enhanced .gitignore
 - Prevents accidental commits of:
-  - Runtime data (MonProjet/allData/)
+  - Runtime data (x108-core/allData/)
   - Secrets and credentials
   - Build artifacts
   - Logs and caches
@@ -326,7 +326,7 @@ This release represents the culmination of:
 
 1. **PROOFKIT_REPORT FAIL** — Root hash mismatch is expected (local vs. stored)
 2. **Connector loops** — Connectors run indefinitely (use Ctrl+C to stop)
-3. **Local data** — MonProjet/allData/ is ephemeral (not committed)
+3. **Local data** — x108-core/allData/ is ephemeral (not committed)
 
 ---
 
@@ -338,7 +338,7 @@ This release represents the culmination of:
 - Multi-domain comparison
 
 ### Phase 5: Renaming & Release
-- Rename `MonProjet/` → `x108-core/`
+- Rename `x108-core/` → `x108-core/`
 - Create GitHub release
 - Tag version
 

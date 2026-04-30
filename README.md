@@ -116,6 +116,6 @@ Résultat attendu :
 
 - `node_modules/` n’est pas versionné. Il se régénère avec `npm.cmd install`.
 - `vendor/wheels/` contient seulement les dépendances Python minimales terrain.
-- `MonProjet/allData/` n’est pas versionné : données runtime générées.
+- `x108-core/allData/` n’est pas versionné : données runtime générées.
 - `audit_terrain/` n’est pas versionné : audits locaux.
 - Les caractères bizarres dans certains logs sont un problème d’encodage console Windows, pas un problème moteur.

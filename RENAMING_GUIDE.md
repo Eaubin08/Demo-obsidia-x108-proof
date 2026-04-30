@@ -1,11 +1,11 @@
 # Phase 5: Renaming & Release
 
-## Renaming: MonProjet/ → x108-core/
+## Renaming: x108-core/ → x108-core/
 
 ### Current Structure
 ```
 Demo-obsidia-x108-proof/
-├── MonProjet/
+├── x108-core/
 │   ├── allData/
 │   ├── connectors/
 │   └── ...
@@ -30,18 +30,18 @@ Demo-obsidia-x108-proof/
 
 ```bash
 # 1. Rename the directory
-mv MonProjet x108-core
+mv x108-core x108-core
 
 # 2. Update all imports and references
 # In Python files:
-# from MonProjet import ... → from x108-core import ...
+# from x108-core import ... → from x108-core import ...
 
 # 3. Update documentation
-# References to MonProjet/ → x108-core/
+# References to x108-core/ → x108-core/
 
 # 4. Commit the change
 git add -A
-git commit -m "refactor: Rename MonProjet to x108-core for clarity"
+git commit -m "refactor: Rename x108-core to x108-core for clarity"
 
 # 5. Push
 git push origin develop
