@@ -29,7 +29,7 @@ jobs:
       
       - name: Upload Lean Build Artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lean-build-artifacts
           path: proofs/lean/.lake/build
@@ -58,7 +58,7 @@ jobs:
       
       - name: Upload TLA+ Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tlaplus-results
           path: proofs/tla/*.out
@@ -85,7 +85,7 @@ jobs:
       
       - name: Upload Merkle Report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: merkle-report
           path: proofs/merkle_seal.json
@@ -112,7 +112,7 @@ jobs:
       
       - name: Upload RFC3161 Report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: rfc3161-report
           path: proofs/rfc3161_anchor.json
@@ -163,7 +163,7 @@ jobs:
       
       - name: Upload Connector Logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: connector-logs
           path: |
@@ -213,7 +213,7 @@ jobs:
       
       - name: Upload Test Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: |
@@ -229,7 +229,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Download All Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       
       - name: Generate PROOFKIT_REPORT
         run: |
@@ -275,7 +275,7 @@ jobs:
           EOF
       
       - name: Upload PROOFKIT_REPORT
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: proofkit-report
           path: PROOFKIT_REPORT.json
