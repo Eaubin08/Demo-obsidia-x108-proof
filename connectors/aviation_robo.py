@@ -1,11 +1,10 @@
-import os
-import requests
+﻿import requests
 import time
 import random
 import uuid
 
 def run_flight_flow():
-    url = "http://localhost:3018/kernel/ragnarok"
+    url = "http://localhost:3001/kernel/ragnarok"
     print("✈️ [OBSIDIA-AVIONICS] Initialisation du flux GPS Defense...")
 
     while True:

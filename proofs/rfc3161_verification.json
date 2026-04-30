@@ -1,0 +1,18 @@
+{
+  "verified": [
+    {
+      "id": "token-001",
+      "timestamp": "2026-04-30T12:44:00Z",
+      "digest_length": 31
+    }
+  ],
+  "failed": [],
+  "warnings": [],
+  "timestamp": "2026-04-30T14:29:25.206126",
+  "summary": {
+    "total": 1,
+    "verified": 1,
+    "failed": 0,
+    "success_rate": "100.0%"
+  }
+}

@@ -1,11 +1,10 @@
-import os
-import requests
+﻿import requests
 import time
 import random
 
 def run_normal_bank():
-    url = "http://localhost:3018/kernel/ragnarok"
-    print("ðŸ¦ [BANK-FULL] Lancement du flux certifiÃ©...")
+    url = "http://localhost:3001/kernel/ragnarok"
+    print("🏦 [BANK-FULL] Lancement du flux certifié...")
 
     while True:
         payload = {
@@ -29,16 +28,15 @@ def run_normal_bank():
                 "urgency_score": 5
             }
         }
-
         try:
             res = requests.post(url, json=payload, timeout=10)
             if res.status_code == 200:
-                print(f"âœ… [BANK] Transaction validÃ©e : {payload['state']['amount']}â‚¬")
+                print(f"✅ [BANK] Transaction validée : {payload['state']['amount']}€")
             else:
-                print(f"âš ï¸ [BANK] Erreur Kernel : {res.text}")
+                print(f"⚠️ [BANK] Erreur Kernel : {res.text}")
         except Exception as e:
-            print(f"âŒ [BANK] Erreur : {e}")
-
+            print(f"❌ [BANK] Erreur : {e}")
+            
         time.sleep(10)
 
 if __name__ == "__main__":
