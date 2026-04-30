@@ -1,26 +1,17 @@
 # Core dependencies for OBSIDIA X-108 Proof Verification
 cryptography>=41.0.0
-hashlib-blake2b>=0.1.0
 pysha3>=1.0.2
 requests>=2.31.0
 pydantic>=2.0.0
 python-dateutil>=2.8.2
 pytz>=2023.3
 
-# Merkle & Attestation
-merkle-tree>=0.1.0
+# Cryptography & Attestation
 pyasn1>=0.4.8
 pyasn1-modules>=0.2.8
 
 # RFC3161 Timestamping
-rfc3161>=0.2.0
 pyopenssl>=23.2.0
-
-# TLA+ & Model Checking
-tla-tools>=1.8.0
-
-# Lean 4 Integration
-lean4-sdk>=4.0.0
 
 # Testing & Verification
 pytest>=7.4.0
