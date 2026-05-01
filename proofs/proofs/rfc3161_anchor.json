@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "x108_kernel": "4.0.0",
+  "tokens": [
+    {
+      "id": "token-001",
+      "timestamp": "2026-04-30T13:15:54.854417Z",
+      "digest": "e1323d86a1d6d85af688a73caedf2b8bf94ed420da3359c4a826d0cc79ad1ec1"
+    }
+  ],
+  "verification_timestamp": "2026-04-30T13:15:54.854459Z"
+}

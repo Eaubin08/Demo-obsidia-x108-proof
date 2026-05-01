@@ -1,5 +1,4 @@
-import ccxt
-import os
+﻿import ccxt
 import requests
 import time
 import sys
@@ -58,7 +57,7 @@ def stream_to_kernel():
                     ]
                 }
 
-                response = requests.post("http://localhost:3018/kernel/ragnarok", json=payload)
+                response = requests.post("http://localhost:3001/kernel/ragnarok", json=payload)
                 
                 status_color = "🟢" if len(history["prices"]) >= MAX_HISTORY else "🟡"
                 print(f"{status_color} Flux envoyé ({len(history['prices'])}/{MAX_HISTORY} pts) : {ticker['last']}")

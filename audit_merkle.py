@@ -27,7 +27,7 @@ def build_merkle_root(hashes):
 
 def run_audit():
     # Chemin vers les preuves
-    path = "./x108-core/allData"
+    path = "./MonProjet/allData"
     if not os.path.exists(path):
         print(f"ERROR: Directory {path} not found.")
         return
