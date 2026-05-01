@@ -1,0 +1,32 @@
+{
+  "total_cases": 100,
+  "failed_cases": 0,
+  "families": {
+    "normal": 40,
+    "review": 30,
+    "blocked": 30
+  },
+  "gate_counts": {
+    "ALLOW": 40,
+    "BLOCK": 60
+  },
+  "gap_counts": {
+    "MATCH": 70,
+    "HARDER_THAN_BUSINESS": 30
+  },
+  "reason_family_counts": {
+    "ALLOW": 40,
+    "CONTRADICTION": 60
+  },
+  "confusion_matrix": {
+    "TP": 60,
+    "TN": 40,
+    "FP": 0,
+    "FN": 0
+  },
+  "total_elapsed_ms": 28348.944,
+  "mean_elapsed_ms": 283.489,
+  "report_json": "C:\\Users\\User\\Desktop\\Demo-obsidia-x108-proof\\artifacts\\p2_bank_truth_proxy\\bank_truth_proxy_report.json",
+  "summary_json": "C:\\Users\\User\\Desktop\\Demo-obsidia-x108-proof\\artifacts\\p2_bank_truth_proxy\\bank_truth_proxy_summary.json",
+  "report_csv": "C:\\Users\\User\\Desktop\\Demo-obsidia-x108-proof\\artifacts\\p2_bank_truth_proxy\\bank_truth_proxy_report.csv"
+}

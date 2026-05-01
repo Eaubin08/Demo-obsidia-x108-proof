@@ -1,0 +1,21 @@
+{
+  "transaction_type": "wire",
+  "amount": 17600,
+  "channel": "api",
+  "counterparty_known": false,
+  "counterparty_age_days": 0,
+  "account_balance": 20000.0,
+  "available_cash": 15840.0,
+  "historical_avg_amount": 528.0,
+  "behavior_shift_score": 0.95,
+  "fraud_score": 0.92,
+  "policy_limit": 1000.0,
+  "affordability_score": 0.1,
+  "urgency_score": 0.9,
+  "identity_mismatch_score": 0.9,
+  "narrative_conflict_score": 0.9,
+  "device_trust_score": 0.06,
+  "recent_failed_attempts": 7,
+  "elapsed_s": 162.0,
+  "min_required_elapsed_s": 108.0
+}

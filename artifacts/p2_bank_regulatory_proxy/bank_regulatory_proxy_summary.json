@@ -1,0 +1,35 @@
+{
+  "total_cases": 54,
+  "failed_cases": 0,
+  "family_counts": {
+    "aml": 9,
+    "kyc": 9,
+    "beneficiary": 9,
+    "urgency": 9,
+    "anomaly": 9,
+    "combined": 9
+  },
+  "zone_counts": {
+    "allow": 18,
+    "hold": 18,
+    "block": 18
+  },
+  "gate_counts": {
+    "ALLOW": 18,
+    "HOLD": 18,
+    "BLOCK": 18
+  },
+  "gap_counts": {
+    "MATCH": 54
+  },
+  "reason_family_counts": {
+    "ALLOW": 18,
+    "OTHER": 18,
+    "CONTRADICTION": 18
+  },
+  "total_elapsed_ms": 17936.048,
+  "mean_elapsed_ms": 332.149,
+  "report_json": "C:\\Users\\User\\Desktop\\Demo-obsidia-x108-proof\\artifacts\\p2_bank_regulatory_proxy\\bank_regulatory_proxy_report.json",
+  "summary_json": "C:\\Users\\User\\Desktop\\Demo-obsidia-x108-proof\\artifacts\\p2_bank_regulatory_proxy\\bank_regulatory_proxy_summary.json",
+  "report_csv": "C:\\Users\\User\\Desktop\\Demo-obsidia-x108-proof\\artifacts\\p2_bank_regulatory_proxy\\bank_regulatory_proxy_report.csv"
+}
