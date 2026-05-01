@@ -1,0 +1,60 @@
+=== OBSIDIA TERRAIN — FULL DEPENDENCY CHECK ===
+[OK] Dossier présent : .\sigma
+[OK] Dossier présent : .\sigma\domains
+[OK] Dossier présent : .\MonProjet
+[OK] Dossier présent : .\MonProjet\allData
+[OK] Dossier présent : .\connectors
+[OK] Dossier présent : .\node_modules
+[OK] Dossier présent : .\node_modules\express
+[OK] Dossier présent : .\vendor
+[OK] Dossier présent : .\vendor\wheels
+[OK] Dossier présent : .\proofs\lean
+[OK] Fichier présent : .\package.json (0.42 KB)
+[OK] Fichier présent : .\package-lock.json (29.13 KB)
+[OK] Fichier présent : .\requirements.terrain.txt (0.03 KB)
+[OK] Fichier présent : .\MonProjet\server.kernel.sealed.cjs (3.93 KB)
+[OK] Fichier présent : .\sigma\contracts.py (15.92 KB)
+[OK] Fichier présent : .\sigma\aggregation.py (5.86 KB)
+[OK] Fichier présent : .\sigma\guard.py (2.96 KB)
+[OK] Fichier présent : .\sigma\protocols.py (2.14 KB)
+[OK] Fichier présent : .\sigma\run_pipeline.py (4.3 KB)
+[OK] Fichier présent : .\sigma\registry.py (0.44 KB)
+[OK] Fichier présent : .\sigma\obsidia_sigma_v130.py (11.03 KB)
+[OK] Fichier présent : .\audit_merkle.py (2.1 KB)
+[OK] Fichier présent : .\merkle_seal.json (0.31 KB)
+[OK] Fichier présent : .\START_TERRAIN.ps1 (0.42 KB)
+[OK] Fichier présent : .\STOP_TERRAIN.ps1 (1.23 KB)
+[OK] Fichier présent : .\TEST_BANK.ps1 (0.91 KB)
+[OK] Fichier présent : .\CHECK_DEPS_TERRAIN.ps1 (1.58 KB)
+[OK] Fichier présent : .\proofs\lean\lakefile.lean (0.13 KB)
+[OK] Fichier présent : .\proofs\lean\lean-toolchain (0.02 KB)
+[OK] Commande disponible : node -> C:\Program Files\nodejs\node.exe
+[OK] Commande disponible : npm.cmd -> C:\Program Files\nodejs\npm.cmd
+[OK] Commande disponible : python -> C:\Users\User\AppData\Local\Programs\Python\Python313\python.exe
+[OK] Commande disponible : pip -> C:\Users\User\AppData\Local\Programs\Python\Python313\Scripts\pip.exe
+[OK] Commande disponible : git -> C:\Program Files\Git\cmd\git.exe
+[OK] Commande disponible : sqlcmd -> C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\SQLCMD.EXE
+[OK] Commande disponible : sqllocaldb -> C:\Program Files\Microsoft SQL Server\150\Tools\Binn\SqlLocalDB.exe
+[OK] Commande disponible : elan -> C:\Users\User\.elan\bin\elan.exe
+[OK] Commande disponible : lean -> C:\Users\User\.elan\bin\lean.exe
+[OK] Commande disponible : lake -> C:\Users\User\.elan\bin\lake.exe
+[OK] Express présent dans node_modules
+[OK] Node peut importer express
+[OK] npm list OK
+[OK] sigma compileall OK
+[OK] Imports Python terrain OK
+[OK] Wheel présent pour : requests
+[OK] Wheel présent pour : pytest
+[OK] Installation Python offline depuis vendor/wheels OK
+[OK] Connectors scannés
+[OK] Pas de hardcode localhost:3001 dans connectors
+[OK] SQL SQLEXPRESS accessible
+[OK] SQL LocalDB accessible
+[OK] lake build OK
+[OK] Serveur écoute sur 3018
+[OK] Runtime bank endpoint OK : bank / ANALYZE / BLOCK
+[OK] DEPENDENCY CHECK GLOBAL PASS
+
+ERRORS=0
+WARNINGS=0
+REPORT_DIR=.\audit_terrain\dependency_check_20260428_200452
