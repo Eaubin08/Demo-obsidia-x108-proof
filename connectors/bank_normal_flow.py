@@ -1,4 +1,8 @@
+develop
 import requests
+
+﻿import requests
+ main
 import time
 import random
 
@@ -28,7 +32,6 @@ def run_normal_bank():
                 "urgency_score": 5
             }
         }
-
         try:
             res = requests.post(url, json=payload, timeout=10)
             if res.status_code == 200:
@@ -37,7 +40,11 @@ def run_normal_bank():
                 print(f"⚠️ [BANK] Erreur Kernel : {res.text}")
         except Exception as e:
             print(f"❌ [BANK] Erreur : {e}")
+ develop
 
+
+            
+ main
         time.sleep(10)
 
 if __name__ == "__main__":
