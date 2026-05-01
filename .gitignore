@@ -1,0 +1,220 @@
+# X-108 Enhanced .gitignore
+# This file prevents accidental commits of sensitive, temporary, or large files
+
+# === RUNTIME DATA (Ephemeral) ===
+MonProjet/allData/
+*.log
+*.tmp
+*.cache
+
+# === DEPENDENCIES ===
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.Python
+venv/
+env/
+ENV/
+
+# === BUILD ARTIFACTS ===
+dist/
+build/
+*.o
+*.so
+*.dylib
+.lake/
+.lake/build/
+
+# === IDE & EDITOR ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# === ENVIRONMENT VARIABLES ===
+.env
+.env.local
+.env.*.local
+
+# === SECRETS (NEVER COMMIT) ===
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+secrets/
+private/
+credentials/
+
+# === TESTING ===
+coverage/
+.nyc_output/
+.pytest_cache/
+.vitest/
+test-results.json
+*.lcov
+
+# === TEMPORARY FILES ===
+*.tmp
+*.bak
+*.swp
+temp/
+tmp/
+
+# === LARGE FILES (Use Git LFS instead) ===
+*.zip
+*.tar.gz
+*.tar.bz2
+*.rar
+*.7z
+
+# === DATABASE FILES ===
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+
+# === OS FILES ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# === LOCK FILES (Optional: Commit these for reproducibility) ===
+# Uncomment if you want to commit lock files
+# package-lock.json
+# poetry.lock
+# Pipfile.lock
+
+# === LOGS ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# === REPORTS ===
+reports/
+*.html
+coverage-report/
+
+# === VSCODE ===
+.vscode/settings.json
+.vscode/extensions.json
+.vscode/launch.json
+
+# === JETBRAINS ===
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# === SUBLIME ===
+*.sublime-project
+*.sublime-workspace
+
+# === EMACS ===
+*~
+\#*\#
+.\#*
+
+# === VIM ===
+.vim/
+*.swp
+*.swo
+*~
+.netrwhist
+
+# === MACOS ===
+.AppleDouble
+.LSOverride
+._*
+
+# === WINDOWS ===
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# === LINUX ===
+.directory
+.Trash-*
+
+# === PYTHON SPECIFIC ===
+*.egg
+*.egg-info/
+dist/
+build/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# === NODE SPECIFIC ===
+node_modules/
+npm-debug.log
+yarn-error.log
+.npm
+.eslintcache
+
+# === LEAN 4 SPECIFIC ===
+.lake/
+.lake/build/
+lake-packages/
+
+# === TLA+ SPECIFIC ===
+*.out
+*.trc
+*.fp
+*.chkpt
+*.states
+
+# === GENERATED FILES (Do not commit) ===
+PROOFKIT_REPORT.json (local only)
+merkle_seal.json (local only)
+rfc3161_anchor.json (local only)
+
+# === DOCUMENTATION BUILD ===
+docs/_build/
+docs/.doctrees/
+site/
+
+# === PACKAGE MANAGERS ===
+.pnp
+.pnp.js
+yarn.lock (optional)
+package-lock.json (optional)
+
+# === MISC ===
+*.orig
+*.rej
+*.bkp
+*.swp
+*~
+.#*
+
+# === ALLOW THESE FILES (Explicitly tracked) ===
+!.gitkeep
+!.github/
+!.github/workflows/
+!proofs/
+!proofs/lean/
+!proofs/tla/
+!docs/
+!tests/
+!connectors/
