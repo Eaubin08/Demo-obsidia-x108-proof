@@ -20,8 +20,7 @@ jobs:
           curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           echo "$HOME/.elan/bin" >> $GITHUB_PATH
 
-      - name: Build Lean proofs
-        continue-on-error: true
+      - name: Build Lean proofs if present
         run: |
           if [ -d "proofs/lean" ]; then
             cd proofs/lean
@@ -43,27 +42,49 @@ jobs:
         run: |
           python -m pip install --upgrade pip pytest cryptography pyopenssl requests
 
-      - name: Run public verifiers non blocking
+      - name: Run public verifiers blocking
         run: |
-          python proofs/verify_all.py || echo "INFO: verify_all.py finished with warnings in non-blocking job."
+          python proofs/verify_all.py
 
-      - name: Run sigma tests
-        continue-on-error: true
+      - name: Run Sigma tests only if test files exist
         run: |
-          if [ -d "sigma/tests" ]; then
-            python -m pytest sigma/tests -v
-          else
-            echo "INFO: sigma/tests not found."
+          if [ ! -d "sigma/tests" ]; then
+            echo "INFO: sigma/tests not found, skipped."
+            exit 0
           fi
 
-      - name: Run RFC3161 anchor schema test
-        continue-on-error: true
-        run: |
-          if [ -f "qa/cross-platform/test_rfc3161_anchor_schema.py" ]; then
-            python -m pytest qa/cross-platform/test_rfc3161_anchor_schema.py -v
-          else
-            echo "INFO: RFC3161 anchor schema test not found."
+          if ! find sigma/tests -type f \( -name "test_*.py" -o -name "*_test.py" \) | grep -q .; then
+            echo "INFO: sigma/tests exists but has no pytest files, skipped."
+            exit 0
           fi
+
+          python -m pytest sigma/tests -v
+
+      - name: Run RFC3161 anchor schema test only if collectable
+        run: |
+          TARGET="qa/cross-platform/test_rfc3161_anchor_schema.py"
+
+          if [ ! -f "$TARGET" ]; then
+            echo "INFO: RFC3161 anchor schema test not found, skipped."
+            exit 0
+          fi
+
+          set +e
+          python -m pytest --collect-only -q "$TARGET"
+          collect_code=$?
+          set -e
+
+          if [ "$collect_code" -eq 5 ]; then
+            echo "INFO: RFC3161 anchor schema file exists but has no collectable pytest tests, skipped."
+            exit 0
+          fi
+
+          if [ "$collect_code" -ne 0 ]; then
+            echo "FAIL: pytest collection failed with code $collect_code"
+            exit "$collect_code"
+          fi
+
+          python -m pytest "$TARGET" -v
 
   verify-python-strict:
     runs-on: ubuntu-latest
@@ -91,13 +112,10 @@ jobs:
 
           if b.startswith((b"\xff\xfe", b"\xfe\xff")):
               raise SystemExit("FAIL: UTF-16 BOM detected")
-
           if b.startswith(b"\xef\xbb\xbf"):
               raise SystemExit("FAIL: UTF-8 BOM detected")
-
           if b"\x00" in b:
               raise SystemExit("FAIL: NULL bytes detected")
-
           if b"\r" in b:
               raise SystemExit("FAIL: CRLF detected; expected LF")
 
@@ -132,7 +150,6 @@ jobs:
 
       - name: Run verify_decision.py if canonical envelope exists
         run: |
-          echo "=== verify_decision envelope discovery ==="
           ENVELOPE=""
 
           for candidate in \
@@ -149,11 +166,10 @@ jobs:
           done
 
           if [ -z "$ENVELOPE" ]; then
-            echo "INFO: no canonical decision envelope found; verify_decision.py skipped."
+            echo "INFO: no canonical decision envelope found, skipped."
             exit 0
           fi
 
-          echo "Using envelope: $ENVELOPE"
           python proofs/verify_decision.py "$ENVELOPE"
 
   verify-tla:
@@ -171,11 +187,10 @@ jobs:
         run: |
           curl -L https://github.com/tlaplus/tlaplus/releases/latest/download/tla2tools.jar -o tla2tools.jar
 
-      - name: Run TLC X108_MC
-        continue-on-error: true
+      - name: Run TLC X108_MC if present
         run: |
           if [ -f "formal/tla/X108_MC.tla" ]; then
             java -jar tla2tools.jar -config formal/tla/X108_MC.cfg formal/tla/X108_MC.tla
           else
-            echo "INFO: TLA specification not found."
+            echo "INFO: TLA specification not found, skipped."
           fi
