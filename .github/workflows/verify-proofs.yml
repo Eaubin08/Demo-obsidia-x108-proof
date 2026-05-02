@@ -26,7 +26,7 @@ jobs:
             cd proofs/lean
             lake build
           else
-            echo "⚠️ Dossier Lean non trouvé, build sauté."
+            echo "âš ï¸ Dossier Lean non trouvÃ©, build sautÃ©."
           fi
 
   verify-python-and-sigma:
@@ -41,15 +41,15 @@ jobs:
           python -m pip install --upgrade pip pytest cryptography pyopenssl requests
       - name: Run public verifiers
         run: |
-          # Le "|| true" permet d'éviter l'exit code 1 qui bloquait tout à l'heure
-          python proofs/verify_all.py || echo "⚠️ Audit terminé avec des avertissements"
+          # Le "|| true" permet d'Ã©viter l'exit code 1 qui bloquait tout Ã  l'heure
+          python proofs/verify_all.py || echo "âš ï¸ Audit terminÃ© avec des avertissements"
       - name: Run sigma tests
         continue-on-error: true
         run: |
           if [ -d "sigma/tests" ]; then
             python -m pytest sigma/tests -v
           else
-            echo "⚠️ Dossier sigma non trouvé."
+            echo "âš ï¸ Dossier sigma non trouvÃ©."
           fi
       - name: Run RFC3161 anchor schema test
         continue-on-error: true
@@ -57,7 +57,7 @@ jobs:
           if [ -f "qa/cross-platform/test_rfc3161_anchor_schema.py" ]; then
             python -m pytest qa/cross-platform/test_rfc3161_anchor_schema.py -v
           else
-            echo "⚠️ Test RFC3161 non trouvé."
+            echo "âš ï¸ Test RFC3161 non trouvÃ©."
           fi
 
 
@@ -158,7 +158,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -170,5 +170,5 @@ jobs:
           if [ -f "formal/tla/X108_MC.tla" ]; then
             java -jar tla2tools.jar -config formal/tla/X108_MC.cfg formal/tla/X108_MC.tla
           else
-            echo "⚠️ Spécification TLA non trouvée."
+            echo "âš ï¸ SpÃ©cification TLA non trouvÃ©e."
           fi
