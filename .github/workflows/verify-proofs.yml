@@ -1,13 +1,12 @@
 name: Verify proofs
 
-on:
+"on":
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
-  # Force l'utilisation de Node 24 pour supprimer les avertissements d'obsolescence
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
@@ -15,10 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
       - name: Install elan
         run: |
           curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
       - name: Build Lean proofs
         continue-on-error: true
         run: |
@@ -26,41 +27,43 @@ jobs:
             cd proofs/lean
             lake build
           else
-            echo "âš ï¸ Dossier Lean non trouvÃ©, build sautÃ©."
+            echo "INFO: proofs/lean not found, skipped."
           fi
 
   verify-python-and-sigma:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip pytest cryptography pyopenssl requests
-      - name: Run public verifiers
+
+      - name: Run public verifiers non blocking
         run: |
-          # Le "|| true" permet d'Ã©viter l'exit code 1 qui bloquait tout Ã  l'heure
-          python proofs/verify_all.py || echo "âš ï¸ Audit terminÃ© avec des avertissements"
+          python proofs/verify_all.py || echo "INFO: verify_all.py finished with warnings in non-blocking job."
+
       - name: Run sigma tests
         continue-on-error: true
         run: |
           if [ -d "sigma/tests" ]; then
             python -m pytest sigma/tests -v
           else
-            echo "âš ï¸ Dossier sigma non trouvÃ©."
+            echo "INFO: sigma/tests not found."
           fi
+
       - name: Run RFC3161 anchor schema test
         continue-on-error: true
         run: |
           if [ -f "qa/cross-platform/test_rfc3161_anchor_schema.py" ]; then
             python -m pytest qa/cross-platform/test_rfc3161_anchor_schema.py -v
           else
-            echo "âš ï¸ Test RFC3161 non trouvÃ©."
+            echo "INFO: RFC3161 anchor schema test not found."
           fi
-
-
 
   verify-python-strict:
     runs-on: ubuntu-latest
@@ -72,7 +75,7 @@ jobs:
 
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install Python dependencies
         run: |
@@ -146,7 +149,7 @@ jobs:
           done
 
           if [ -z "$ENVELOPE" ]; then
-            echo "INFO: no canonical decision envelope found; verify_decision.py requires <path_to_envelope.json>, step skipped."
+            echo "INFO: no canonical decision envelope found; verify_decision.py skipped."
             exit 0
           fi
 
@@ -157,18 +160,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Set up Java
+
+      - name: Set up Java without Node action
         run: |
           sudo apt-get update
           sudo apt-get install -y openjdk-17-jre-headless
           java -version
+
       - name: Download TLC
-        run: curl -L https://github.com/tlaplus/tlaplus/releases/latest/download/tla2tools.jar -o tla2tools.jar
+        run: |
+          curl -L https://github.com/tlaplus/tlaplus/releases/latest/download/tla2tools.jar -o tla2tools.jar
+
       - name: Run TLC X108_MC
         continue-on-error: true
         run: |
           if [ -f "formal/tla/X108_MC.tla" ]; then
             java -jar tla2tools.jar -config formal/tla/X108_MC.cfg formal/tla/X108_MC.tla
           else
-            echo "âš ï¸ SpÃ©cification TLA non trouvÃ©e."
+            echo "INFO: TLA specification not found."
           fi
