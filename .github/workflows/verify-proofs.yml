@@ -14,7 +14,7 @@ jobs:
   verify-lean:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install elan
         run: |
           curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
@@ -32,8 +32,8 @@ jobs:
   verify-python-and-sigma:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
       - name: Install dependencies
@@ -61,17 +61,22 @@ jobs:
           fi
 
 
+
   verify-python-strict:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           clean: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip pytest cryptography pyopenssl requests
 
       - name: Check aggregation_stable encoding
         run: |
@@ -96,7 +101,7 @@ jobs:
           print("ENCODING_OK")
           PY
 
-      - name: Compile Python sources
+      - name: Compile aggregation_stable.py
         run: |
           python -m py_compile RECUPE_SCORING/aggregation_stable.py
 
@@ -106,14 +111,52 @@ jobs:
           python root_hash_verify.py
           python seal_verify.py
 
-      - name: Run ProofKit strict
+      - name: Run ProofKit strict with report
         run: |
+          set +e
           python proofs/verify_all.py
+          code=$?
+          echo "VERIFY_ALL_EXIT=$code"
+
+          if [ -f "proofs/PROOFKIT_REPORT.json" ]; then
+            echo "===== PROOFKIT_REPORT.json ====="
+            cat proofs/PROOFKIT_REPORT.json
+          else
+            echo "PROOFKIT_REPORT.json absent"
+          fi
+
+          exit $code
+
+      - name: Run verify_decision.py if canonical envelope exists
+        run: |
+          echo "=== verify_decision envelope discovery ==="
+          ENVELOPE=""
+
+          for candidate in \
+            "proofs/decision_envelope.json" \
+            "proofs/examples/decision_envelope.json" \
+            "proofs/examples/valid_decision_envelope.json" \
+            "proofs/V18_3_1/decision_envelope.json" \
+            "examples/decision_envelope.json"
+          do
+            if [ -f "$candidate" ]; then
+              ENVELOPE="$candidate"
+              break
+            fi
+          done
+
+          if [ -z "$ENVELOPE" ]; then
+            echo "INFO: no canonical decision envelope found; verify_decision.py requires <path_to_envelope.json>, step skipped."
+            exit 0
+          fi
+
+          echo "Using envelope: $ENVELOPE"
+          python proofs/verify_decision.py "$ENVELOPE"
 
   verify-tla:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
