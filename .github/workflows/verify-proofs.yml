@@ -1,77 +1,106 @@
 name: Verify proofs
 
-on:
+"on":
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
-  # Force l'utilisation de Node 24 pour supprimer les avertissements d'obsolescence
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   verify-lean:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+
       - name: Install elan
         run: |
           curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           echo "$HOME/.elan/bin" >> $GITHUB_PATH
-      - name: Build Lean proofs
-        continue-on-error: true
+
+      - name: Build Lean proofs if present
         run: |
           if [ -d "proofs/lean" ]; then
             cd proofs/lean
             lake build
           else
-            echo "⚠️ Dossier Lean non trouvé, build sauté."
+            echo "INFO: proofs/lean not found, skipped."
           fi
 
   verify-python-and-sigma:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip pytest cryptography pyopenssl requests
-      - name: Run public verifiers
+
+      - name: Run public verifiers blocking
         run: |
-          # Le "|| true" permet d'éviter l'exit code 1 qui bloquait tout à l'heure
-          python proofs/verify_all.py || echo "⚠️ Audit terminé avec des avertissements"
-      - name: Run sigma tests
-        continue-on-error: true
+          python proofs/verify_all.py
+
+      - name: Run Sigma tests only if test files exist
         run: |
-          if [ -d "sigma/tests" ]; then
-            python -m pytest sigma/tests -v
-          else
-            echo "⚠️ Dossier sigma non trouvé."
-          fi
-      - name: Run RFC3161 anchor schema test
-        continue-on-error: true
-        run: |
-          if [ -f "qa/cross-platform/test_rfc3161_anchor_schema.py" ]; then
-            python -m pytest qa/cross-platform/test_rfc3161_anchor_schema.py -v
-          else
-            echo "⚠️ Test RFC3161 non trouvé."
+          if [ ! -d "sigma/tests" ]; then
+            echo "INFO: sigma/tests not found, skipped."
+            exit 0
           fi
 
+          if ! find sigma/tests -type f \( -name "test_*.py" -o -name "*_test.py" \) | grep -q .; then
+            echo "INFO: sigma/tests exists but has no pytest files, skipped."
+            exit 0
+          fi
+
+          python -m pytest sigma/tests -v
+
+      - name: Run RFC3161 anchor schema test only if collectable
+        run: |
+          TARGET="qa/cross-platform/test_rfc3161_anchor_schema.py"
+
+          if [ ! -f "$TARGET" ]; then
+            echo "INFO: RFC3161 anchor schema test not found, skipped."
+            exit 0
+          fi
+
+          set +e
+          python -m pytest --collect-only -q "$TARGET"
+          collect_code=$?
+          set -e
+
+          if [ "$collect_code" -eq 5 ]; then
+            echo "INFO: RFC3161 anchor schema file exists but has no collectable pytest tests, skipped."
+            exit 0
+          fi
+
+          if [ "$collect_code" -ne 0 ]; then
+            echo "FAIL: pytest collection failed with code $collect_code"
+            exit "$collect_code"
+          fi
+
+          python -m pytest "$TARGET" -v
 
   verify-python-strict:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           clean: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip pytest cryptography pyopenssl requests
 
       - name: Check aggregation_stable encoding
         run: |
@@ -83,20 +112,17 @@ jobs:
 
           if b.startswith((b"\xff\xfe", b"\xfe\xff")):
               raise SystemExit("FAIL: UTF-16 BOM detected")
-
           if b.startswith(b"\xef\xbb\xbf"):
               raise SystemExit("FAIL: UTF-8 BOM detected")
-
           if b"\x00" in b:
               raise SystemExit("FAIL: NULL bytes detected")
-
           if b"\r" in b:
               raise SystemExit("FAIL: CRLF detected; expected LF")
 
           print("ENCODING_OK")
           PY
 
-      - name: Compile Python sources
+      - name: Compile aggregation_stable.py
         run: |
           python -m py_compile RECUPE_SCORING/aggregation_stable.py
 
@@ -106,26 +132,65 @@ jobs:
           python root_hash_verify.py
           python seal_verify.py
 
-      - name: Run ProofKit strict
+      - name: Run ProofKit strict with report
         run: |
+          set +e
           python proofs/verify_all.py
+          code=$?
+          echo "VERIFY_ALL_EXIT=$code"
+
+          if [ -f "proofs/PROOFKIT_REPORT.json" ]; then
+            echo "===== PROOFKIT_REPORT.json ====="
+            cat proofs/PROOFKIT_REPORT.json
+          else
+            echo "PROOFKIT_REPORT.json absent"
+          fi
+
+          exit $code
+
+      - name: Run verify_decision.py if canonical envelope exists
+        run: |
+          ENVELOPE=""
+
+          for candidate in \
+            "proofs/decision_envelope.json" \
+            "proofs/examples/decision_envelope.json" \
+            "proofs/examples/valid_decision_envelope.json" \
+            "proofs/V18_3_1/decision_envelope.json" \
+            "examples/decision_envelope.json"
+          do
+            if [ -f "$candidate" ]; then
+              ENVELOPE="$candidate"
+              break
+            fi
+          done
+
+          if [ -z "$ENVELOPE" ]; then
+            echo "INFO: no canonical decision envelope found, skipped."
+            exit 0
+          fi
+
+          python proofs/verify_decision.py "$ENVELOPE"
 
   verify-tla:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+      - uses: actions/checkout@v6
+
+      - name: Set up Java without Node action
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jre-headless
+          java -version
+
       - name: Download TLC
-        run: curl -L https://github.com/tlaplus/tlaplus/releases/latest/download/tla2tools.jar -o tla2tools.jar
-      - name: Run TLC X108_MC
-        continue-on-error: true
+        run: |
+          curl -L https://github.com/tlaplus/tlaplus/releases/latest/download/tla2tools.jar -o tla2tools.jar
+
+      - name: Run TLC X108_MC if present
         run: |
           if [ -f "formal/tla/X108_MC.tla" ]; then
             java -jar tla2tools.jar -config formal/tla/X108_MC.cfg formal/tla/X108_MC.tla
           else
-            echo "⚠️ Spécification TLA non trouvée."
+            echo "INFO: TLA specification not found, skipped."
           fi
